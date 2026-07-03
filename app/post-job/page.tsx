@@ -1,0 +1,148 @@
+"use client";
+
+import { useState } from "react";
+import { createJob } from "../actions/jobs";
+
+export default function PostJobPage() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const result = await createJob({
+      title: formData.get("title"),
+      company: formData.get("company"),
+      location: formData.get("location"),
+      description: formData.get("description"),
+    });
+
+    setLoading(false);
+
+    if (!result.success) {
+      setError(result.message!);
+      return;
+    }
+
+    setSuccess("Job posted successfully!");
+    form.reset();
+  }
+
+  return (
+    <div className="container-page py-16 max-w-2xl">
+      <h1 className="text-pageH1">Post a Job</h1>
+
+      <p className="text-muted mt-4 leading-relaxed">
+        Reach thousands of verified job seekers across Ethiopia. Fill out the
+        form below to publish your listing.
+      </p>
+
+      <form
+        onSubmit={handleSubmit}
+        className="mt-8 rounded-2xl border border-border bg-white p-7 space-y-4"
+      >
+        {error && (
+          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+            {success}
+          </div>
+        )}
+
+        <div>
+          <label
+            htmlFor="title"
+            className="text-xs font-semibold text-ink"
+          >
+            Job Title
+          </label>
+
+          <input
+            id="title"
+            name="title"
+            type="text"
+            required
+            placeholder="Senior Frontend Developer"
+            className="mt-1.5 w-full rounded-lg border border-border px-3 py-2.5 text-sm outline-none focus:border-brandGreen"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label
+              htmlFor="company"
+              className="text-xs font-semibold text-ink"
+            >
+              Company
+            </label>
+
+            <input
+              id="company"
+              name="company"
+              type="text"
+              required
+              placeholder="ABC Technologies"
+              className="mt-1.5 w-full rounded-lg border border-border px-3 py-2.5 text-sm outline-none focus:border-brandGreen"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="location"
+              className="text-xs font-semibold text-ink"
+            >
+              Location
+            </label>
+
+            <input
+              id="location"
+              name="location"
+              type="text"
+              required
+              placeholder="Addis Ababa"
+              className="mt-1.5 w-full rounded-lg border border-border px-3 py-2.5 text-sm outline-none focus:border-brandGreen"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="description"
+            className="text-xs font-semibold text-ink"
+          >
+            Job Description
+          </label>
+
+          <textarea
+            id="description"
+            name="description"
+            rows={5}
+            required
+            placeholder="Describe the job responsibilities, requirements, and qualifications..."
+            className="mt-1.5 w-full rounded-lg border border-border px-3 py-2.5 text-sm outline-none focus:border-brandGreen"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-full bg-brandGreen py-3 text-sm font-semibold text-white transition-colors hover:bg-darkGreen disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loading ? "Publishing..." : "Publish Listing"}
+        </button>
+      </form>
+    </div>
+  );
+}
