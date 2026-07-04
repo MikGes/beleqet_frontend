@@ -25,7 +25,7 @@ export default function JobCard({ job }: { job: Job }) {
       </div>
 
       <h3 className="text-cardH3 mt-3 text-ink leading-snug line-clamp-2">{job.title}</h3>
-      <p className="text-sm text-muted mt-1">{job.company}</p>
+      <p className="text-sm text-muted mt-1">{job.company?.name}</p>
 
       <div className="flex items-center gap-1 text-xs text-muted mt-2">
         <MapPin className="h-3.5 w-3.5" />

@@ -1,4 +1,4 @@
-// File: C:\Users\MikiyasGet\Desktop\Training\beleqet\beleqet-interview-task\beleqet-jobs-nextjs\app\jobs\page.tsx
+// File: C:\Users\mel\Desktop\Miki\belequet\frontend\beleqet_frontend\app\jobs\page.tsx
 import * as entry from '../../../../app/jobs/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

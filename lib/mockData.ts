@@ -1,7 +1,26 @@
 export type Job = {
   id: string;
   title: string;
-  company: string;
+  company: {
+    id: string;
+    name: string;
+    description: string | null;
+    logoUrl: string | null;
+    website: string | null;
+    industry: string | null;
+    size: string | null;
+    verified: boolean;
+    userId: string;
+    createdAt: string;
+    updatedAt: string;
+    benefits: string[];
+    coverImageUrl: string | null;
+    facebookUrl: string | null;
+    foundedYear: number | null;
+    linkedinUrl: string | null;
+    location: string | null;
+    twitterUrl: string | null;
+  };
   location: string;
   type: "Full Time" | "Part Time" | "Remote" | "Hybrid" | "On-site" | "Contract";
   category: string;
