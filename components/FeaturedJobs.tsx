@@ -4,9 +4,9 @@ import { getJobs } from "@/app/actions/jobs";
 
 export default async function FeaturedJobs() {
   const data = await getJobs({ limit: 20 });
-
-  // filter featured jobs from API response
-  const featured = data.items.filter((j: any) => j.featured);
+  const items = data.items ?? [];
+  const featured = items.filter((j: { featured?: boolean }) => j.featured);
+  const jobs = featured.length > 0 ? featured.slice(0, 5) : items.slice(0, 5);
 
   return (
     <section className="bg-white border-y border-border">
@@ -27,11 +27,15 @@ export default async function FeaturedJobs() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {featured.map((job: any) => (
-            <JobCard key={job.id} job={job} />
-          ))}
-        </div>
+        {jobs.length === 0 ? (
+          <p className="text-muted text-sm">No jobs available yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {jobs.map((job: any) => (
+              <JobCard key={job.id} job={job} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

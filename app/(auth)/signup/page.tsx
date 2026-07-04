@@ -38,8 +38,9 @@ export default function SignupPage() {
     setSuccess("Account created successfully!");
 
     form.reset();
+    router.refresh();
     setTimeout(() => {
-      router.push("/jobs"); // or /dashboard
+      router.push("/jobs");
     }, 800);
   }
 

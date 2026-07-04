@@ -156,9 +156,9 @@ export default function JobsListing() {
               {categories.map((cat: any) => (
                 <button
                   key={cat.id}
-                  onClick={() => setCategory(cat.id)}
+                  onClick={() => setCategory(cat.slug)}
                   className={`block w-full text-left text-sm px-3 py-2 rounded-lg ${
-                    category === cat.id
+                    category === cat.slug
                       ? "bg-green-100 text-green-700 font-semibold"
                       : ""
                   }`}
@@ -207,17 +207,7 @@ export default function JobsListing() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {safeJobs.map((job: any) => (
-                <JobCard
-                  key={job.id}
-                  job={{
-                    ...job,
-
-                    // 🔥 FIX OBJECT RENDER BUG HERE
-                    company: job.company?.name || "Unknown Company",
-
-                    category: job.category?.label || "",
-                  }}
-                />
+                <JobCard key={job.id} job={job} />
               ))}
             </div>
           )}

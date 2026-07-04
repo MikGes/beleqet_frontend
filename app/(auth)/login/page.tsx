@@ -28,6 +28,7 @@ export default function LoginPage() {
       setError(result?.message || "Invalid credentials");
       return;
     }
+    router.refresh();
     router.push("/jobs");
   };
 

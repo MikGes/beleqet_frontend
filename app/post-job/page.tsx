@@ -1,12 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import { createJob } from "../actions/jobs";
+import { useEffect, useState } from "react";
+import { createJob, getJobCategories } from "../actions/jobs";
+
+const jobTypes = [
+  { value: "FULL_TIME", label: "Full Time" },
+  { value: "PART_TIME", label: "Part Time" },
+  { value: "REMOTE", label: "Remote" },
+  { value: "HYBRID", label: "Hybrid" },
+  { value: "CONTRACT", label: "Contract" },
+];
 
 export default function PostJobPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    getJobCategories()
+      .then((data) => setCategories(Array.isArray(data) ? data : []))
+      .catch(() => setCategories([]));
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -20,9 +35,10 @@ export default function PostJobPage() {
 
     const result = await createJob({
       title: formData.get("title"),
-      company: formData.get("company"),
-      location: formData.get("location"),
       description: formData.get("description"),
+      location: formData.get("location"),
+      type: formData.get("type"),
+      categoryId: formData.get("categoryId"),
     });
 
     setLoading(false);
@@ -62,10 +78,7 @@ export default function PostJobPage() {
         )}
 
         <div>
-          <label
-            htmlFor="title"
-            className="text-xs font-semibold text-ink"
-          >
+          <label htmlFor="title" className="text-xs font-semibold text-ink">
             Job Title
           </label>
 
@@ -81,40 +94,62 @@ export default function PostJobPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label
-              htmlFor="company"
-              className="text-xs font-semibold text-ink"
-            >
-              Company
+            <label htmlFor="type" className="text-xs font-semibold text-ink">
+              Job Type
             </label>
 
-            <input
-              id="company"
-              name="company"
-              type="text"
+            <select
+              id="type"
+              name="type"
               required
-              placeholder="ABC Technologies"
+              defaultValue="FULL_TIME"
               className="mt-1.5 w-full rounded-lg border border-border px-3 py-2.5 text-sm outline-none focus:border-brandGreen"
-            />
+            >
+              {jobTypes.map((t) => (
+                <option key={t.value} value={t.value}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
             <label
-              htmlFor="location"
+              htmlFor="categoryId"
               className="text-xs font-semibold text-ink"
             >
-              Location
+              Category
             </label>
 
-            <input
-              id="location"
-              name="location"
-              type="text"
+            <select
+              id="categoryId"
+              name="categoryId"
               required
-              placeholder="Addis Ababa"
               className="mt-1.5 w-full rounded-lg border border-border px-3 py-2.5 text-sm outline-none focus:border-brandGreen"
-            />
+            >
+              <option value="">Select category</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
           </div>
+        </div>
+
+        <div>
+          <label htmlFor="location" className="text-xs font-semibold text-ink">
+            Location
+          </label>
+
+          <input
+            id="location"
+            name="location"
+            type="text"
+            required
+            placeholder="Addis Ababa"
+            className="mt-1.5 w-full rounded-lg border border-border px-3 py-2.5 text-sm outline-none focus:border-brandGreen"
+          />
         </div>
 
         <div>

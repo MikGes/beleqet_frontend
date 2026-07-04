@@ -3,6 +3,8 @@ import Link from "next/link";
 import { MapPin, Clock, Building2, ArrowLeft } from "lucide-react";
 
 import { getJobById, getJobs } from "@/app/actions/jobs";
+import { formatJobType } from "@/lib/format";
+import ApplyForm from "@/components/ApplyForm";
 
 export default async function JobDetailPage({
   params,
@@ -65,7 +67,7 @@ export default async function JobDetailPage({
                   </span>
 
                   <span className="rounded-full bg-brandGreen/10 text-brandGreen font-semibold px-2.5 py-1">
-                    {job.type}
+                    {formatJobType(job.type)}
                   </span>
                 </div>
               </div>
@@ -98,9 +100,7 @@ export default async function JobDetailPage({
 
         <aside className="space-y-6">
           <div className="rounded-2xl border border-border bg-white p-6">
-            <button className="w-full rounded-full bg-brandGreen text-white text-sm font-semibold py-3 hover:bg-darkGreen transition-colors">
-              Apply Now
-            </button>
+            <ApplyForm jobId={job.id} />
 
             <button className="w-full rounded-full border border-border text-ink text-sm font-semibold py-3 mt-2 hover:bg-pageBg transition-colors">
               Save Job
