@@ -200,4 +200,4 @@ export type Job = {
 //   { label: "Satisfaction Rate", value: "98%", icon: "smile" },
 // ];
 
-// export const popularSearches = ["Developer", "Marketing", "Designer", "Accounting", "Sales", "Remote"];
+export const popularSearches = ["Developer", "Marketing", "Designer", "Accounting", "Sales", "Remote"];
